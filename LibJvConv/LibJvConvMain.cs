@@ -8,15 +8,21 @@ namespace LibJvConv
 {
     /**JVDataをコンバートするライブラリ
      * JV-Data 仕様書Excel版（Ver.4.5.1.3）準拠
+     * 取得不可能なデータ
      * 
+     * ・2007：競走条件コード（現在利用されていないもの）
+     * ・2102：着差コード
+     * ・2201：品種コード
+     * ・2302：騎手資格コード
      * */
     public class LibJvConvFuncClass
     {
 
+        /* 引数msgで取得するデータを指定する */
         unsafe public static void jvSysConvFunction(int* msg, String inParam, String outParam)
         {
 
-            if (msg == null || inParam == null)
+            if (msg == null)
             {
                 return;
             }
@@ -25,6 +31,54 @@ namespace LibJvConv
             {
                 case 2001:
                     JV_APP_CV_COURCE(ref inParam, ref outParam);
+                    break;
+                case 2002:
+                    JV_APP_CV_WEEKDAY(ref inParam, ref outParam);
+                    break;
+                case 20031:
+                    JV_APP_CV_GRADE_LONG(ref inParam, ref outParam);
+                    break;
+                case 20032:
+                    JV_APP_CV_GRADE_SHORT(ref inParam, ref outParam);
+                    break;
+                case 2005:
+                    JV_APP_CV_RACE_SHUBETSU(ref inParam, ref outParam);
+                    break;
+                case 2006:
+                    JV_APP_CV_RACE_KIGOU(ref inParam, ref outParam);
+                    break;
+                case 2007:
+                    JV_APP_CV_RACE_CLASS(ref inParam, ref outParam);
+                    break;
+                case 2008:
+                    JV_APP_CV_RACE_HC(ref inParam, ref outParam);
+                    break;
+                case 2009:
+                    JV_APP_CV_TRACK(ref inParam, ref outParam);
+                    break;
+                case 2010:
+                    JV_APP_CV_COURCE_STAT(ref inParam, ref outParam);
+                    break;
+                case 2011:
+                    JV_APP_CV_WEATHER(ref inParam, ref outParam);
+                    break;
+                case 2012:
+                    JV_APP_CV_RACE_EXC(ref inParam, ref outParam);
+                    break;
+                case 2202:
+                    JV_APP_CV_SEX(ref inParam, ref outParam);
+                    break;
+                case 2203:
+                    JV_APP_CV_HOUCE_COLOR(ref inParam, ref outParam);
+                    break;
+                case 2204:
+                    JV_APP_CV_HOUCE_KIND(ref inParam, ref outParam);
+                    break;
+                case 2302:
+                    JV_APP_CV_STABLE(ref inParam, ref outParam);
+                    break;
+                case 2303:
+                    JV_APP_CV_JOCKEY_KIND(ref inParam, ref outParam);
                     break;
                 default:
                     break;
@@ -170,7 +224,7 @@ namespace LibJvConv
             outParam = tmp;
         }
 
-        /* 20031:グレードコード（長） */
+        /* 2003:グレードコード（長） */
         private static void JV_APP_CV_GRADE_LONG(ref String inParam, ref String outParam)
         {
             String tmp;
@@ -283,6 +337,255 @@ namespace LibJvConv
             /* 文字列結合 */
             outParam = string.Join(tmp,tmp2,tmp3);
         }
+
+        /* 2007:競走条件コード */
+        private static void JV_APP_CV_RACE_CLASS(ref String inParam, ref String outParam)
+        {
+            String tmp;
+
+            switch (inParam)
+            {
+                case "0": tmp = "下記以外"; break;
+                case "005": tmp = "５００万円以下"; break;
+                case "010": tmp = "１０００万円以下"; break;
+                case "016": tmp = "１６００万円以下"; break;
+                case "701": tmp = "新馬"; break;
+                case "702": tmp = "未出走"; break;
+                case "703": tmp = "未勝利"; break;
+                case "999": tmp = "オープン"; break;
+                default: tmp = ""; break;
+            }
+            outParam = tmp;
+        }
+
+        /* 2008:重量種別コード */
+        private static void JV_APP_CV_RACE_HC(ref String inParam, ref String outParam)
+        {
+            String tmp;
+
+            switch (inParam)
+            {
+                case "0": tmp = "下記以外"; break;
+                case "1": tmp = "ハンデ"; break;
+                case "2": tmp = "別定"; break;
+                case "3": tmp = "馬齢"; break;
+                case "4": tmp = "定量"; break;
+                default: tmp = ""; break;
+            }
+            outParam = tmp;
+        }
+
+        /* 2009:トラックコード */
+        private static void JV_APP_CV_TRACK(ref String inParam, ref String outParam)
+        {
+            String tmp;
+
+            switch (inParam)
+            {
+                case "00": tmp = " "; break;
+                case "10": tmp = "芝・直"; break;
+                case "11": tmp = "芝・左"; break;
+                case "12": tmp = "芝・左外"; break;
+                case "13": tmp = "芝・左内→外"; break;
+                case "14": tmp = "芝・左外→内"; break;
+                case "15": tmp = "芝・左内２周"; break;
+                case "16": tmp = "芝・左外２周"; break;
+                case "17": tmp = "芝・右"; break;
+                case "18": tmp = "芝・右外"; break;
+                case "19": tmp = "芝・右内→外"; break;
+                case "20": tmp = "芝・右外→内"; break;
+                case "21": tmp = "芝・右内２周"; break;
+                case "22": tmp = "芝・右外２周"; break;
+                case "23": tmp = "ダート・左"; break;
+                case "24": tmp = "ダート・右"; break;
+                case "25": tmp = "ダート・左内"; break;
+                case "26": tmp = "ダート・右外"; break;
+                case "27": tmp = "サンド・左"; break;
+                case "28": tmp = "サンド・右"; break;
+                case "29": tmp = "ダート・直"; break;
+                case "51": tmp = "芝・襷"; break;
+                case "52": tmp = "芝→ダート"; break;
+                case "53": tmp = "芝・左"; break;
+                case "54": tmp = "芝"; break;
+                case "55": tmp = "芝・外"; break;
+                case "56": tmp = "芝・外→内"; break;
+                case "57": tmp = "芝・内→外"; break;
+                case "58": tmp = "芝・内２周"; break;
+                case "59": tmp = "芝・外２周"; break;
+                default: tmp = ""; break;
+            }
+            outParam = tmp;
+        }
+
+        /* 2010:馬場状態コード */
+        private static void JV_APP_CV_COURCE_STAT(ref String inParam, ref String outParam)
+        {
+            String tmp;
+
+            switch (inParam)
+            {
+                case "0": tmp = " "; break;
+                case "1": tmp = "良"; break;
+                case "2": tmp = "稍重"; break;
+                case "3": tmp = "重"; break;
+                case "4": tmp = "不良"; break;
+                default: tmp = ""; break;
+            }
+            outParam = tmp;
+        }
+
+        /* 2011:天候コード */
+        private static void JV_APP_CV_WEATHER(ref String inParam, ref String outParam)
+        {
+            String tmp;
+
+            switch (inParam)
+            {
+                case "0": tmp = " "; break;
+                case "1": tmp = "晴"; break;
+                case "2": tmp = "曇 "; break;
+                case "3": tmp = "雨"; break;
+                case "4": tmp = "小雨"; break;
+                case "5": tmp = "雪"; break;
+                case "6": tmp = "小雪"; break;
+                default: tmp = ""; break;
+            }
+            outParam = tmp;
+        }
+
+        /* 2012:異常区分コード */
+        private static void JV_APP_CV_RACE_EXC(ref String inParam, ref String outParam)
+        {
+            String tmp;
+
+            switch (inParam)
+            {
+                case "0": tmp = " "; break;
+                case "1": tmp = "出走取消"; break;
+                case "2": tmp = "発走除外"; break;
+                case "3": tmp = "競走除外"; break;
+                case "4": tmp = "競走中止"; break;
+                case "5": tmp = "失格"; break;
+                case "6": tmp = "落馬再騎乗 "; break;
+                case "7": tmp = "降着 "; break;
+                default: tmp = ""; break;
+            }
+            outParam = tmp;
+        }
+
+        /* 2202:性別コード */
+        private static void JV_APP_CV_SEX(ref String inParam, ref String outParam)
+        {
+            String tmp;
+
+            switch (inParam)
+            {
+                case "1": tmp = "牡"; break;
+                case "2": tmp = "牝"; break;
+                case "3": tmp = "セン"; break;
+                default: tmp = ""; break;
+            }
+            outParam = tmp;
+        }
+
+        /* 2203:毛色コード */
+        private static void JV_APP_CV_HOUCE_COLOR(ref String inParam, ref String outParam)
+        {
+            String tmp;
+
+            switch (inParam)
+            {
+                case "01": tmp = "栗"; break;
+                case "02": tmp = "栃栗"; break;
+                case "03": tmp = "鹿"; break;
+                case "04": tmp = "黒鹿"; break;
+                case "05": tmp = "青鹿"; break;
+                case "06": tmp = "青"; break;
+                case "07": tmp = "芦"; break;
+                case "08": tmp = "栗粕"; break;
+                case "09": tmp = "鹿粕"; break;
+                case "10": tmp = "青粕"; break;
+                case "11": tmp = "白"; break;
+                default: tmp = ""; break;
+            }
+            outParam = tmp;
+        }
+
+        /* 2204:馬記号コード */
+        private static void JV_APP_CV_HOUCE_KIND(ref String inParam, ref String outParam)
+        {
+            String tmp;
+
+            switch (inParam)
+            {
+                case "01": tmp = "(抽)"; break;
+                case "02": tmp = "[抽] "; break;
+                case "03": tmp = "(父)"; break;
+                case "04": tmp = "(市) "; break;
+                case "05": tmp = "(地)"; break;
+                case "06": tmp = "(外)"; break;
+                case "07": tmp = "(父)(抽)"; break;
+                case "08": tmp = "(父)(市)"; break;
+                case "09": tmp = "(父)(地)"; break;
+                case "10": tmp = "(市)(地)"; break;
+                case "11": tmp = "(外)(地)"; break;
+                case "12": tmp = "(父)(市)(地)"; break;
+                case "15": tmp = "(招)"; break;
+                case "16": tmp = "(招)(外)"; break;
+                case "17": tmp = "(招)(父)"; break;
+                case "18": tmp = "(招)(市)"; break;
+                case "19": tmp = "(招)(父)(市)"; break;
+                case "20": tmp = "(父)(外) "; break;
+                case "21": tmp = "[地] "; break;
+                case "22": tmp = "(外)[地] "; break;
+                case "23": tmp = "(父)[地] "; break;
+                case "24": tmp = "(市)[地] "; break;
+                case "25": tmp = "(父)(市)[地] "; break;
+                case "26": tmp = "[外] "; break;
+                case "27": tmp = "(父)[外]  "; break;
+                case "31": tmp = "(持)"; break;
+                case "40": tmp = "(父)(外)(地)"; break;
+                case "41": tmp = "(父)(外)[地] "; break;
+                default: tmp = ""; break;
+            }
+            outParam = tmp;
+        }
+
+        /* 2302:東西所属コード */
+        private static void JV_APP_CV_STABLE(ref String inParam, ref String outParam)
+        {
+            String tmp;
+
+            switch (inParam)
+            {
+                case "0": tmp = " "; break;
+                case "1": tmp = "東"; break;
+                case "2": tmp = "西"; break;
+                case "3": tmp = "地"; break;
+                case "4": tmp = "外"; break;
+                default: tmp = ""; break;
+            }
+            outParam = tmp;
+        }
+
+        /* 2303:騎手見習いコード */
+        private static void JV_APP_CV_JOCKEY_KIND(ref String inParam, ref String outParam)
+        {
+            String tmp;
+
+            switch (inParam)
+            {
+                case "0": tmp = ""; break;
+                case "1": tmp = "☆"; break;
+                case "2": tmp = "△"; break;
+                case "3": tmp = "▲"; break;
+                default: tmp = ""; break;
+            }
+            outParam = tmp;
+        }
+
+
+        
 
 
 
