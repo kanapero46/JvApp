@@ -23,7 +23,7 @@ namespace LibJvConv
 
             switch (*msg)
             {
-                case 1:
+                case 2001:
                     JV_APP_CV_COURCE(ref inParam, ref outParam);
                     break;
                 default:
