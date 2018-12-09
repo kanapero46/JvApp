@@ -17,9 +17,13 @@ namespace LibJvConv
      * */
     public class LibJvConvFuncClass
     {
+        private const String LIB_VERSION = "00.01-00";
+        public const int GET_VERSION = 1111;
+        public const int COURCE_CODE = 2001;
+        public const int GRACE_CODE = 20031;
 
         /* 引数msgで取得するデータを指定する */
-        unsafe public static void jvSysConvFunction(int* msg, String inParam, String outParam)
+        unsafe public static void jvSysConvFunction(int* msg, String inParam, ref String outParam)
         {
 
             if (msg == null)
@@ -29,6 +33,9 @@ namespace LibJvConv
 
             switch (*msg)
             {
+                case GET_VERSION:
+                    outParam = LIB_VERSION;
+                    break;
                 case 2001:
                     JV_APP_CV_COURCE(ref inParam, ref outParam);
                     break;
