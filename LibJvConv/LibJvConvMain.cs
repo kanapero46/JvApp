@@ -18,9 +18,18 @@ namespace LibJvConv
     public class LibJvConvFuncClass
     {
         private const String LIB_VERSION = "00.01-00";
-        public const int GET_VERSION = 1111;
+        public const int GET_VERSION = 9999;
         public const int COURCE_CODE = 2001;
         public const int GRACE_CODE = 20031;
+        public const int RACE_SHUBETSU_LONG_CODE = 20051;
+        public const int RACE_SHUBETSU_SHORT_CODE = 20052;
+        public const int JOCKEY_MINARAI_CD = 2303;
+        public const int HOUCE_KIND = 2204;
+        public const int TRACK_CODE = 2009;
+        public const int TRACK_CODE_SHORT = 20091;
+
+        /* ここから下はJv-Data仕様書に定義されていないもの */
+        public const int RACE_NAME = 1000;
 
         /* 引数msgで取得するデータを指定する */
         unsafe public static void jvSysConvFunction(int* msg, String inParam, ref String outParam)
@@ -36,6 +45,9 @@ namespace LibJvConv
                 case GET_VERSION:
                     outParam = LIB_VERSION;
                     break;
+                case RACE_NAME:
+                    JV_APP_CV_RACE_NAME(ref inParam, ref outParam);
+                    break;
                 case 2001:
                     JV_APP_CV_COURCE(ref inParam, ref outParam);
                     break;
@@ -48,8 +60,11 @@ namespace LibJvConv
                 case 20032:
                     JV_APP_CV_GRADE_SHORT(ref inParam, ref outParam);
                     break;
-                case 2005:
-                    JV_APP_CV_RACE_SHUBETSU(ref inParam, ref outParam);
+                case RACE_SHUBETSU_LONG_CODE:
+                    JV_APP_CV_RACE_SHUBETSU_LONG(ref inParam, ref outParam);
+                    break;
+                case RACE_SHUBETSU_SHORT_CODE:
+                    JV_APP_CV_RACE_SHUBETSU_SHORT(ref inParam, ref outParam);
                     break;
                 case 2006:
                     JV_APP_CV_RACE_KIGOU(ref inParam, ref outParam);
@@ -60,8 +75,11 @@ namespace LibJvConv
                 case 2008:
                     JV_APP_CV_RACE_HC(ref inParam, ref outParam);
                     break;
-                case 2009:
+                case TRACK_CODE:
                     JV_APP_CV_TRACK(ref inParam, ref outParam);
+                    break;
+                case TRACK_CODE_SHORT:
+                    JV_APP_CV_TRACK_SHORT(ref inParam, ref outParam);
                     break;
                 case 2010:
                     JV_APP_CV_COURCE_STAT(ref inParam, ref outParam);
@@ -78,13 +96,13 @@ namespace LibJvConv
                 case 2203:
                     JV_APP_CV_HOUCE_COLOR(ref inParam, ref outParam);
                     break;
-                case 2204:
+                case HOUCE_KIND:
                     JV_APP_CV_HOUCE_KIND(ref inParam, ref outParam);
                     break;
                 case 2302:
                     JV_APP_CV_STABLE(ref inParam, ref outParam);
                     break;
-                case 2303:
+                case JOCKEY_MINARAI_CD:
                     JV_APP_CV_JOCKEY_KIND(ref inParam, ref outParam);
                     break;
                 default:
@@ -271,8 +289,8 @@ namespace LibJvConv
             outParam = tmp;
         }
 
-        /* 2005:競走種別コード */
-        private static void JV_APP_CV_RACE_SHUBETSU(ref String inParam, ref String outParam)
+        /* 20051:競走種別コード */
+        private static void JV_APP_CV_RACE_SHUBETSU_LONG(ref String inParam, ref String outParam)
         {
             String tmp;
             switch (inParam)
@@ -284,6 +302,28 @@ namespace LibJvConv
                 case "14": tmp = "サラ系４歳以上"; break;
                 case "18": tmp = "サラ障害３歳以上"; break;
                 case "19": tmp = "サラ障害４歳以上"; break;
+                case "21": tmp = "アラブ系２歳"; break;
+                case "22": tmp = "アラブ系３歳"; break;
+                case "23": tmp = "アラブ系３歳以上"; break;
+                case "24": tmp = "アラブ系４歳以上"; break;
+                default: tmp = ""; break;
+            }
+            outParam = tmp;
+        }
+
+        /* 20052:競走種別コード */
+        private static void JV_APP_CV_RACE_SHUBETSU_SHORT(ref String inParam, ref String outParam)
+        {
+            String tmp;
+            switch (inParam)
+            {
+                case "00": tmp = " "; break;
+                case "11": tmp = "２歳"; break;
+                case "12": tmp = "３歳"; break;
+                case "13": tmp = "３歳以上"; break;
+                case "14": tmp = "４歳以上"; break;
+                case "18": tmp = "障害３歳以上"; break;
+                case "19": tmp = "障害４歳以上"; break;
                 case "21": tmp = "アラブ系２歳"; break;
                 case "22": tmp = "アラブ系３歳"; break;
                 case "23": tmp = "アラブ系３歳以上"; break;
@@ -320,7 +360,7 @@ namespace LibJvConv
             }
 
             /* 2バイト目：産地・購買条件等 */
-            switch (inParam.Substring(2, 1))
+            switch (inParam.Substring(1, 1))
             {
                 case "0":	tmp2 = ""; break;
                 case "1":	tmp2 = "牡"; break;
@@ -331,7 +371,7 @@ namespace LibJvConv
             }
 
             /* 3バイト目：交流競走関係等 */
-            switch (inParam.Substring(3, 1))
+            switch (inParam.Substring(2, 1))
             {
                 case "0": tmp3 = ""; break;
                 case "1": tmp3 = "(指定)"; break;
@@ -419,6 +459,48 @@ namespace LibJvConv
                 case "57": tmp = "芝・内→外"; break;
                 case "58": tmp = "芝・内２周"; break;
                 case "59": tmp = "芝・外２周"; break;
+                default: tmp = ""; break;
+            }
+            outParam = tmp;
+        }
+
+        /* 20091:トラックコード(芝・ダート) */
+        private static void JV_APP_CV_TRACK_SHORT(ref String inParam, ref String outParam)
+        {
+            String tmp;
+
+            switch (inParam)
+            {
+                case "00": tmp = " "; break;
+                case "10":
+                case "11":
+                case "12":
+                case "13":
+                case "14":
+                case "15":
+                case "16":
+                case "17":
+                case "18":
+                case "19":
+                case "20":   
+                case "21":
+                case "22": tmp = "芝"; break;
+                case "24": 
+                case "25": 
+                case "26": 
+                case "27": 
+                case "28": 
+                case "23":
+                case "29": tmp = "ダート"; break;
+                case "51": tmp = "芝"; break;
+                case "52": tmp = "ダート"; break;
+                case "53": tmp = "芝"; break;
+                case "54": tmp = "芝"; break;
+                case "55": tmp = "芝"; break;
+                case "56": tmp = "芝"; break;
+                case "57": tmp = "芝"; break;
+                case "58": tmp = "芝"; break;
+                case "59": tmp = "芝"; break;
                 default: tmp = ""; break;
             }
             outParam = tmp;
@@ -589,6 +671,32 @@ namespace LibJvConv
                 default: tmp = ""; break;
             }
             outParam = tmp;
+        }
+
+        /* 1000:一般競走名*/
+        private static void JV_APP_CV_RACE_NAME(ref String inParam, ref String outParam)
+        {
+            String tmp, tmp2,tmp3 ;
+            int Jyoken = 0;
+
+            if(!Int32.TryParse(inParam, out Jyoken))
+            {
+                /* inParamが文字列の場合はそのまま返す */
+                outParam = inParam;
+            }
+
+            tmp = "";
+            tmp2 = "";
+            tmp3 = "";
+            /* 年齢条件 */
+            tmp3 = inParam.Substring(0, 2);
+            JV_APP_CV_RACE_SHUBETSU_SHORT(ref tmp3, ref tmp);
+
+            /* クラス */
+            tmp3 = inParam.Substring(2, 3);
+            JV_APP_CV_RACE_CLASS(ref tmp3, ref tmp2);
+
+            outParam = string.Join("",tmp,tmp2);
         }
 
 
