@@ -341,7 +341,7 @@ namespace LibJvConv
             /* 1バイト目：産地・購買条件等 */
             switch(inParam.Substring(0,1))
             {
-                case "0": tmp = "下記以外"; break;
+                case "0": tmp = ""; break;
                 case "A": tmp = "(混合)"; break;
                 case "B": tmp = "(父)"; break;
                 case "C": tmp = "(市)"; break;
